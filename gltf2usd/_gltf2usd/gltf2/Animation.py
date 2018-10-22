@@ -1,6 +1,6 @@
 from bisect import bisect_left
 
-from _gltf2usd.gltf2usdUtils import GLTF2USDUtils
+from ..gltf2usdUtils import GLTF2USDUtils
 
 from pxr import Gf
 
