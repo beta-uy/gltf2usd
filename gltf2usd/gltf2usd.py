@@ -47,9 +47,6 @@ class GLTF2USD(object):
         """
         self.logger = logging.getLogger('gltf2usd')
         self.logger.setLevel(logging.DEBUG)
-        console_handler = logging.StreamHandler()
-        console_handler.setLevel(logging.DEBUG)
-        self.logger.addHandler(console_handler)
 
         self.fps = fps
         self.gltf_loader = GLTF2Loader(gltf_file, optimize_textures, generate_texture_transform_texture)
