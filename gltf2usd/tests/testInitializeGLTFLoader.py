@@ -16,7 +16,7 @@ class TestInitializeGLTFLoader(unittest.TestCase):
     def test_get_nodes(self):
         nodes = self.loader.get_nodes()
         for node in nodes:
-            print(node.get_parent())
+            print(node.parent)
 
     def test_get_scenes(self):
         scenes = self.loader.get_scenes()
@@ -54,11 +54,11 @@ class TestInitializeGLTFLoader(unittest.TestCase):
         joints = skin.get_joints()
 
         for joint in joints:
-            print(joint.get_name())
+            print(joint.name)
 
     def test_get_root_skin_joint(self):
         skin = self.loader.get_skins()[0]
-        root_joints = skin.get_root_joints()
+        root_joints = skin.root_joints
 
     def test_skin_get_inverse_bind_matrices(self):
         skin = self.loader.get_skins()[0]
@@ -66,7 +66,7 @@ class TestInitializeGLTFLoader(unittest.TestCase):
 
     def test_convert_node_name_to_usd_friendly_name(self):
         node = self.loader.get_nodes()[0]
-        GLTF2USDUtils.convert_to_usd_friendly_node_name(node.get_name())
+        GLTF2USDUtils.convert_to_usd_friendly_node_name(node.name)
 
     def test_convert_node_transform_to_rest_matrix(self):
         node = self.loader.get_nodes()[0]
@@ -82,13 +82,13 @@ class TestInitializeGLTFLoader(unittest.TestCase):
         node = self.loader.get_nodes()[2]
         animation_channels = animation.get_animation_channels_for_node(node)
         print('\n\n\n\n\n\n\n')
-        print([animation_channel.get_target().get_path() for animation_channel in animation_channels])
+        print([animation_channel.target.path for animation_channel in animation_channels])
 
     def test_get_animation_sampler_input_data(self):
         animation = self.loader.get_animations()[0]
         node = self.loader.get_nodes()[2]
         animation_channel = animation.get_animation_channel_for_node_and_path(node, 'rotation')
-        input_data = animation_channel.get_sampler().get_input_data()
+        input_data = animation_channel.sampler.get_input_data()
 
         print('input:\n\n\n\n\n\n\n')
         print(input_data)
@@ -97,7 +97,7 @@ class TestInitializeGLTFLoader(unittest.TestCase):
         animation = self.loader.get_animations()[0]
         node = self.loader.get_nodes()[2]
         animation_channel = animation.get_animation_channel_for_node_and_path(node, 'rotation')
-        output_data = animation_channel.get_sampler().get_output_data()
+        output_data = animation_channel.sampler.get_output_data()
         print('output:\n\n\n\n\n\n\n')
         print(output_data)
 

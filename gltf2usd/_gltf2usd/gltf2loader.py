@@ -5,8 +5,6 @@ import json
 import os
 import re
 import struct
-import base64
-import re
 
 import gltf2usdUtils
 
@@ -94,7 +92,7 @@ class GLTF2Loader:
     """A very simple glTF loader.  It is essentially a utility to load data from accessors
     """
 
-    def __init__(self, gltf_file):
+    def __init__(self, gltf_file, optimize_textures=False, generate_texture_transform_texture=True):
         """Initializes the glTF 2.0 loader
 
         Arguments:
@@ -107,6 +105,8 @@ class GLTF2Loader:
             raise Exception('Can only accept .gltf files')
 
         self.root_dir = os.path.dirname(gltf_file)
+        self._optimize_textures = optimize_textures
+        self._generate_texture_transform_texture = generate_texture_transform_texture
         try:
             with codecs.open(gltf_file, encoding='utf-8', errors='strict') as f:
                 self.json_data = json.load(f)
@@ -132,7 +132,7 @@ class GLTF2Loader:
         self._images = []
         if 'images' in self.json_data:
             for i, image_entry in enumerate(self.json_data['images']):
-                self._images.append(GLTFImage.GLTFImage(image_entry, i, self))
+                self._images.append(GLTFImage.GLTFImage(image_entry, i, self, self._optimize_textures, self._generate_texture_transform_texture))
 
 
     def _initialize_nodes(self):
@@ -268,6 +268,7 @@ class GLTF2Loader:
 
         data_type = ''
         data_type_size = 4
+        normalize_divisor = 1.0 #used if the value needs to be normalized
         if accessor_component_type == AccessorComponentType.FLOAT:
             data_type = 'f'
             data_type_size = 4
@@ -277,9 +278,11 @@ class GLTF2Loader:
         elif accessor_component_type == AccessorComponentType.UNSIGNED_SHORT:
             data_type = 'H'
             data_type_size = 2
+            normalize_divisor = 65535.0 if 'normalized' in accessor and accessor['normalized'] == True else 1.0 
         elif accessor_component_type == AccessorComponentType.UNSIGNED_BYTE:
             data_type = 'B'
             data_type_size = 1
+            normalize_divisor = 255.0 if 'normalized' in accessor and accessor['normalized'] == True else 1.0
         else:
             raise Exception('unsupported accessor component type!')
 
@@ -288,7 +291,8 @@ class GLTF2Loader:
             for j in range(0, accessor_type_size):
                 x = offset + j * accessor_component_type_size
                 window = buffer_data[x:x + data_type_size]
-                entries.append(struct.unpack(data_type, window)[0])
+                entries.append((struct.unpack(data_type, window)[0])/normalize_divisor)
+
             if len(entries) > 1:
                 data_arr.append(tuple(entries))
             else:

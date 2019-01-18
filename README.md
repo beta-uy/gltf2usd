@@ -2,14 +2,15 @@
 
 This tool is a command-line Python script which converts glTF 2.0 models to USD, with the goal being simple pipeline conversion from glTF to usdz using Pixar's `usdzip` or Apple's `usdz_converter`.  
 
-The tool is a **proof-of-concept**, to determine format conversion details, which could be useful for an actual C++ USD plugin.  It has been developed and tested on both Windows 10 and Mac OS 10.14 Mojave Beta, using USD v18.09 and is built against the USD Python API.
+The tool is a **proof-of-concept**, to determine format conversion details, which could be useful for an actual C++ USD plugin.  It has been developed and tested on both Windows 10 and Mac OS 10.14 Mojave Beta, using USD v18.09 and v18.11, and is built against the USD Python API.
 
-This tool currently only works on glTF 2.0 files, based on the core glTF 2.0 specification (no extensions).  
+This tool currently only works on glTF 2.0 files, based on the core glTF 2.0 specification (no extensions except `PbrSpecularGlossiness` and `KHR_texture_transform`).  
 
 ## Supported Features
 - glTF nodes are mapped to USD `Xform`
 - glTF `PbrMetallicRoughnessMaterial` is mapped to `USDPreviewSurface`
-- glTF `PbrSpecularGlossiness` extension
+- glTF [KHR_materials_pbrSpecularGlossiness](https://github.com/KhronosGroup/glTF/tree/master/extensions/2.0/Khronos/KHR_materials_pbrSpecularGlossiness) extension
+- glTF [KHR_texture_transform](https://github.com/KhronosGroup/glTF/tree/master/extensions/2.0/Khronos/KHR_texture_transform) extension (new textures are generated at the expense of a longer export time)
 - glTF Skeletal animation is mapped to `UsdSkel`
 - glTF node animations are supported
 - Currently supports `.gltf` conversion to `.usd`, `.usda`, `.usdc`, and `.usdz`
@@ -17,7 +18,7 @@ This tool currently only works on glTF 2.0 files, based on the core glTF 2.0 spe
 
 ## Currently not implemented:
 - `.glb` files
-- glTF extensions
+- glTF extensions (except `KHR_materials_pbrSpecularGlossiness` and `KHR_texture_transform`)
 - Primitive modes (other than triangles)
 
 ## Note:
@@ -26,7 +27,7 @@ This tool currently only works on glTF 2.0 files, based on the core glTF 2.0 spe
 
 ## Dependencies:
 
-- You will need to initially have [USD v18.09](https://github.com/PixarAnimationStudios/USD) installed on your system
+- You will need to initially have [USD v18.09 or v18.11](https://github.com/PixarAnimationStudios/USD) installed on your system
 and have the Python modules built
     - Linux users will need to build the tools themselves, or use [AnimalLogic's USD Docker Container](https://github.com/AnimalLogic/docker-usd) (recommended for non-CentOS users)
     - macOS users can use Apple's [Prebuilt USD Toolkit](https://developer.apple.com/go/?id=python-usd-library). Make sure you add the USD dir to your `PYTHONPATH`
@@ -59,6 +60,12 @@ optional arguments:
                         file
   --use-euler-rotation  sets euler rotations for node animations instead of
                         quaternion rotations
+  --optimize-textures   Specifies if image file size should be optimized and
+                        reduced at the expense of longer export time
+  --generate_texture_transform_texture
+                        Enables texture transform texture generation
+  --no-generate_texture_transform_texture
+                        Disables texture transform texture generation
 ```
 
 ## Sample usage:

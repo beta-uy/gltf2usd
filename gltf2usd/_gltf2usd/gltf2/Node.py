@@ -25,25 +25,31 @@ class Node:
         self._children_indices = node_dict['children'] if ('children' in node_dict) else []
         self._children = []
 
-    def get_name(self):
+    @property
+    def name(self):
         return self._name
 
-    def get_translation(self):
+    @property
+    def translation(self):
         return self._translation
 
-    def get_rotation(self):
+    @property
+    def rotation(self):
         return self._rotation
 
-    def get_scale(self):
+    @property
+    def scale(self):
         return self._scale
 
     def get_children(self):
         return self._children
 
-    def get_parent(self):
+    @property
+    def parent(self):
         return self._parent
 
-    def get_matrix(self):
+    @property
+    def matrix(self):
         return self._matrix
 
     def get_index(self):
@@ -54,3 +60,7 @@ class Node:
 
     def get_skin(self):
         return self._skin
+
+    @property
+    def index(self):
+        return self._node_index
