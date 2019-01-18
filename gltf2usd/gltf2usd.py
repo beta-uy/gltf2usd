@@ -786,7 +786,7 @@ def convert_to_usd(gltf_file, usd_file, fps, scale, arkit=False, verbose=False, 
             resolved_asset = r.Resolve(ntpath.basename(usdc_file))
             context = r.CreateDefaultContextForAsset(resolved_asset)
 
-            success = check_usd_compliance(resolved_asset, arkit=args.arkit)
+            success = check_usd_compliance(resolved_asset, arkit=arkit)
             with Ar.ResolverContextBinder(context):
                 if arkit and not success:
                     usd.logger.warning('USD is not ARKit compliant')
