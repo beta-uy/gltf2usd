@@ -47,9 +47,6 @@ class GLTF2USD(object):
         """
         self.logger = logging.getLogger('gltf2usd')
         self.logger.setLevel(logging.DEBUG)
-        console_handler = logging.StreamHandler()
-        console_handler.setLevel(logging.DEBUG)
-        self.logger.addHandler(console_handler)
 
         self.fps = fps
         self.gltf_loader = GLTF2Loader(gltf_file, optimize_textures, generate_texture_transform_texture)
@@ -789,7 +786,7 @@ def convert_to_usd(gltf_file, usd_file, fps, scale, arkit=False, verbose=False, 
             resolved_asset = r.Resolve(ntpath.basename(usdc_file))
             context = r.CreateDefaultContextForAsset(resolved_asset)
 
-            success = check_usd_compliance(resolved_asset, arkit=args.arkit)
+            success = check_usd_compliance(resolved_asset, arkit=arkit)
             with Ar.ResolverContextBinder(context):
                 if arkit and not success:
                     usd.logger.warning('USD is not ARKit compliant')
