@@ -5,7 +5,7 @@ with open("README.md","r") as fh:
 
 setuptools.setup(
   name="gltf2usd",
-  version="0.0.2",
+  version="0.0.3",
   author="Kacey Coley",
   author_email="kcoley@github.com",
   description="glTF to USD converter",

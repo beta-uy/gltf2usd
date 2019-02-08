@@ -94,3 +94,20 @@
 ## 0.1.16 (2019-01-17)
 **Changes:**
 - Add option to toggle texture transform texture generation (enable `--generate_texture_transform_texture`, disable `--no-generate_texture_transform_texture`) (https://github.com/kcoley/gltf2usd/issues/133)
+
+## 0.1.17 (2019-01-24)
+**Changes:**
+- Preserve material names of gltf if present (https://github.com/kcoley/gltf2usd/issues/135)
+
+## 0.1.18 (2019-01-28)
+**Changes:**
+- Cache accessor data to help with glTF import optimization (https://github.com/kcoley/gltf2usd/issues/137)
+- Adding logging for exporting mesh primitive data, behind the -v flag
+
+## 0.1.19 (2019-01-30)
+**Changes:**
+- Prevent crash and display warning when glTF nodes have joints, but no skin (https://github.com/kcoley/gltf2usd/issues/140)
+
+## 0.1.20 (2019-02-04)
+**Fixed Bugs:**
+- Fixed a bug where textures were being indexed through images (https://github.com/kcoley/gltf2usd/issues/142)
